@@ -5,6 +5,8 @@ import { getNestedValue } from "./InputField.jsx";
 /*
 when save/cancel buttons are active or seen, disable other options?
 
+as i can't NOT change the CV,
+I can simply grey out currently edited fields in display CV?
 */
 function Education({
   currentCV,

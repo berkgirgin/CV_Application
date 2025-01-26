@@ -1,18 +1,9 @@
 import { useState } from "react";
 
-function CvDisplay({ currentCV }) {
-  const educationArray = currentCV[1];
+function CvDisplay({ lastSavedCV }) {
+  const personalInfoArray = lastSavedCV[0][0];
+  const educationArray = lastSavedCV[1];
   const educationElements = educationArray.map((entry, index) => {
-    // {
-    //   //error statements
-    //   if (entry["isSaved"] === null || entry["isSaved"] === undefined) {
-    //     throw new Error("isSaved is null or undefined");
-    //   }
-    //   if (!entry["isSaved"]) {
-    //     return;
-    //   }
-    // }
-
     let isGreyedOut = !entry["isSaved"] ? true : false;
 
     return (
@@ -30,23 +21,19 @@ function CvDisplay({ currentCV }) {
 
   return (
     <>
-      <h3>your CV will be display below</h3>
+      <h3>your CV will be displayed below</h3>
+
+      {/* add print button? */}
 
       <div className="cv-display">
         <div className="personal-info">
-          <div>Name: {currentCV[0][0]["name"]}</div>
-          <div>Email: {currentCV[0][0]["email"]}</div>
-          <div>Phone: {currentCV[0][0]["phone"]}</div>
-          <div>Location: {currentCV[0][0]["location"]}</div>
+          <div>Name: {personalInfoArray["name"]}</div>
+          <div>Email: {personalInfoArray["email"]}</div>
+          <div>Phone: {personalInfoArray["phone"]}</div>
+          <div>Location: {personalInfoArray["location"]}</div>
         </div>
 
-        <div className="education-info-container">
-          {/* <div>School Name: {currentCV[1][0]["schoolName"]}</div>
-          <div>Title of Study: {currentCV[1][0]["titleOfStudy"]}</div>
-          <div>End Date: {currentCV[1][0]["endDate"]}</div>
-          <div>Start Date: {currentCV[1][0]["startDate"]}</div> */}
-          {educationElements}
-        </div>
+        <div className="education-info-container">{educationElements}</div>
       </div>
     </>
   );
