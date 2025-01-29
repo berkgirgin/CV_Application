@@ -9,7 +9,7 @@ when save/cancel buttons are active or seen, disable other options?
 as i can't NOT change the CV,
 I can simply grey out currently edited fields in display CV?
 */
-function Education({
+function New_PersonalInformation({
   currentCV,
   currentInputIndex,
   pathToData,
@@ -22,33 +22,42 @@ function Education({
   editButtonHandler,
 }) {
   // important for toggles
-  let elementSelector = ".main-education-container > .inputs-container";
+  let elementSelector =
+    ".main-personal-information-container > .inputs-container";
+
   let displayContainerSelector =
-    ".main-education-container > .display-container";
+    ".main-personal-information-container > .display-container";
 
   const entriesToDisplay = currentCV[pathToData[0]].map((entry, _index) => {
     return (
-      <div key={entry.index} className="education-entry entry">
-        <div className="education-schoolName sub-entry">
-          <div>{entry.schoolName}</div>
-        </div>
-
-        <div className="education-titleOfStudy sub-entry">
-          <div>{entry.titleOfStudy}</div>
-        </div>
-        <div className="education-dates sub-entry">
+      <div key={entry.index} className="personal-information-entry entry">
+        <div className="personal-information-name sub-entry">
           <div>
-            {entry.startDate} - {entry.endDate}
+            <span>Name: </span>
+            {entry.name}
           </div>
         </div>
 
-        {/* <div className="education-endDate sub-entry">
-          <div>End Date: {entry.endDate}</div>
+        <div className="personal-information-email sub-entry">
+          <div>
+            <span>Email: </span>
+            {entry.email}
+          </div>
         </div>
 
-        <div className="education-startDate sub-entry">
-          <div>Start Date: {entry.startDate}</div>
-        </div> */}
+        <div className="personal-information-phone sub-entry">
+          <div>
+            <span>Phone: </span>
+            {entry.phone}
+          </div>
+        </div>
+
+        <div className="personal-information-location sub-entry">
+          <div>
+            <span>Location: </span>
+            {entry.location}
+          </div>
+        </div>
 
         {/* adding a status if not saved */}
         {(() => {
@@ -65,30 +74,29 @@ function Education({
           >
             Edit
           </button>
-          <button
+          {/* <button
             onClick={() => {
               deleteEntryHandler([...pathToData, _index]);
             }}
           >
             Delete
-          </button>
+          </button> */}
         </div>
       </div>
     );
   });
   return (
     <>
-      <div className="main-education-container sidebar-container">
+      <div className="main-personal-information-container sidebar-container">
         <div className="title-container">
-          <div className="subpage-title">Education</div>
-          <button
-            className="add_button button"
+          <div className="subpage-title">Personal Information</div>
+          {/* <button
             onClick={() => {
               addButtonHandler(pathToData, elementSelector);
             }}
           >
-            <img src={addIcon} alt="" />
-          </button>
+            Add
+          </button> */}
           <button
             className="toggle_button button"
             onClick={() => {
@@ -101,27 +109,27 @@ function Education({
 
         <div className="inputs-container">
           <InputField
-            label="School Name"
+            label="Name"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "schoolName"]}
+            pathToData={[...pathToData, currentInputIndex, "name"]}
             onChangeHandler={onChangeHandler}
           />
           <InputField
-            label="Title of Study"
+            label="Email"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "titleOfStudy"]}
+            pathToData={[...pathToData, currentInputIndex, "email"]}
             onChangeHandler={onChangeHandler}
           />
           <InputField
-            label="Start Date"
+            label="Phone"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "startDate"]}
+            pathToData={[...pathToData, currentInputIndex, "phone"]}
             onChangeHandler={onChangeHandler}
           />
           <InputField
-            label="End Date"
+            label="Location"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "endDate"]}
+            pathToData={[...pathToData, currentInputIndex, "location"]}
             onChangeHandler={onChangeHandler}
           />
 
@@ -149,4 +157,4 @@ function Education({
   );
 }
 
-export default Education;
+export default New_PersonalInformation;

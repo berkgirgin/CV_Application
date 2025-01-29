@@ -1,58 +1,13 @@
 import { useState, createContext } from "react";
 
 import PersonalInformation from "./components/PersonalInformation.jsx";
+import New_PersonalInformation from "./components/New_PersonalInformation.jsx";
 import Education from "./components/Education.jsx";
-import CvDisplay from "./components/CvDisplay.jsx";
+import Experience from "./components/Experience.jsx";
+import CvDisplay from "./components/CVDisplay.jsx";
 import example_CV_Database from "./components/exampleCV.jsx";
 
-import { getNestedValue } from "./components/InputField.jsx";
-
-/*
-interimCV so that things are only saved when save button clicked?
-it also helps revert?
-
-so logic pseudo code:
-everything gets the interim CV and displays it
-OTHER THAN the CV Display, which shows the saved one
-
-exclude unSaved changes from currentCV to lastSavedCV?
-
-
-ADD
-  adds an entry to currentCV as unSaved
-  updates currentCV, not lastSavedCV
-EDIT
-  makes the selected entry unSaved
-  updates currentCV, not lastSavedCV
-DELETE
-!!! NEEDS edit > what happens to differences between currentCV AND lastSavedCV
-  deleted the selected entry
-  updates currentCV AND lastSavedCV
-SAVE
-  makes the selected entry Saved
-
-  if it is added entry(so last on index), that does not exist yet on lastSavedCV
-  
-  if it is edited entry(NOT last on index), u can simply override
-
-
-  updates currentCV(make selected entry Saved) AND lastSavedCV(override with selected entry)
-  exclude unSaved changes from currentCV to lastSavedCV?
-CANCEL
-
-  if it is added entry, that does not exist yet on lastSavedCV. Simply delete on currentCV
-  >> how to differ added entry vs editing the last entry 
-  >> currentInputIndex exists > so if pointerSavedCV[currentInputIndex] == null, entry is being added
-  
-  if it is edited entry, u can simply override currentCV with lastSavedCV entry
-
-
-  makes the selected entry Saved
-
-  take the selected entry from lastSavedCV and overwrite on currentCV
-  updates currentCV(to override selected entry) AND lastSavedCV(to make entry saved)
-  exclude unSaved changes from currentCV to lastSavedCV?
-*/
+// import { getNestedValue } from "./components/InputField.jsx";
 
 function App() {
   const exampleCV = example_CV_Database;
@@ -60,7 +15,12 @@ function App() {
   const [lastSavedCV, setLastSavedCV] = useState(structuredClone(currentCV));
 
   // this may need editing after a second Education component, maybe a path?
-  const [currentInputIndex, setCurrentInputIndex] = useState(0);
+  // const [currentInputIndex, setCurrentInputIndex] = useState(0);
+  const [currentInputIndexes, setCurrentInputIndexes] = useState({
+    personalInformation: 0,
+    education: 0,
+    experience: 0,
+  });
 
   function handleInput(updatedValue, pathToData, isSaved) {
     const updatedCV = { ...currentCV };
@@ -75,14 +35,6 @@ function App() {
     setCurrentCV(updatedCV);
   }
 
-  // function reIndexEntries(arrayOfObjects) {
-  //   for (let i = 0; i < arrayOfObjects.length; i++) {
-  //     arrayOfObjects[i]["index"] = i;
-  //   }
-
-  //   setCurrentInputIndex(0);
-  // }
-
   function toggleDisplayOn(elementSelector) {
     const element = document.querySelector(elementSelector);
     element.style.display = "flex"; // Show the element
@@ -95,14 +47,14 @@ function App() {
   function toggleDisplay(elementSelector) {
     const element = document.querySelector(elementSelector);
 
-    if (element.style.display === "none") {
-      element.style.display = "flex"; // Show the element
+    if (element.style.display !== "none") {
+      element.style.display = "none"; // Show the element
     } else {
-      element.style.display = "none"; // Hide the element
+      element.style.display = "flex"; // Hide the element
     }
   }
 
-  function deleteEntryHandler(_pathToData) {
+  function deleteEntryHandler(componentKey, _pathToData) {
     const updatedCV = { ...currentCV };
     let pointer = updatedCV;
 
@@ -128,7 +80,7 @@ function App() {
     if it is edited entry, u can simply delete both on currentCV and lastSavedCV
    */
 
-    const objTarget = pointerSavedCV[currentInputIndex];
+    const objTarget = pointerSavedCV[currentInputIndexes[componentKey]];
     if (objTarget !== undefined) {
       pointerSavedCV.splice(indexToDelete, 1);
       setLastSavedCV(updatedSavedCV);
@@ -138,7 +90,7 @@ function App() {
     setCurrentCV(updatedCV);
   }
 
-  function editButtonHandler(_pathToData, elementSelector) {
+  function editButtonHandler(componentKey, _pathToData, elementSelector) {
     /*
     toggle on the input fields 
     according to the given index(goes as input), get the selected Entry
@@ -167,19 +119,21 @@ function App() {
       pointerSavedCV = pointerSavedCV[_pathToData[i]];
     }
 
-    // console.log(pointer);
-    // console.log(pointerSavedCV);
     pointer["isSaved"] = false;
-    // console.log(pointer);
-    // console.log(pointerSavedCV);
 
     const indexOfObject = _pathToData[_pathToData.length - 1];
 
-    setCurrentInputIndex(indexOfObject);
+    // setCurrentInputIndex(indexOfObject);
+    setCurrentInputIndexes((prev) => {
+      return {
+        ...prev,
+        [componentKey]: indexOfObject, // Update index for this component
+      };
+    });
     setCurrentCV(updatedCV);
   }
 
-  function addButtonHandler(_pathToData, elementSelector) {
+  function addButtonHandler(componentKey, _pathToData, elementSelector) {
     /* 
     toggle on the input fields 
     */
@@ -221,18 +175,24 @@ function App() {
       index: newEntryIndex,
       isSaved: false,
 
-      schoolName: "x", // remove the x
+      schoolName: "", // remove the x
       titleOfStudy: "",
       startDate: "",
       endDate: "",
     };
 
     pointer.push(newEntry);
-    setCurrentInputIndex(newEntryIndex);
+    // setCurrentInputIndex(newEntryIndex);
+    setCurrentInputIndexes((prev) => {
+      return {
+        ...prev,
+        [componentKey]: newEntryIndex, // Update index for this component
+      };
+    });
     setCurrentCV(updatedCV);
   }
 
-  function saveButtonHandler(_pathToData, elementSelector) {
+  function saveButtonHandler(componentKey, _pathToData, elementSelector) {
     /*
     toggle off the input fields 
      */
@@ -260,7 +220,7 @@ function App() {
       pointerSavedCV = pointerSavedCV[_pathToData[i]];
     }
 
-    pointer[currentInputIndex]["isSaved"] = true;
+    pointer[currentInputIndexes[componentKey]]["isSaved"] = true;
 
     /*
     if it is added entry(so last on index), that does not exist yet on lastSavedCV, so target is null
@@ -268,8 +228,10 @@ function App() {
     if it is edited entry(NOT last on index), u can simply override
    */
 
-    const objTarget = pointerSavedCV[currentInputIndex];
-    const objSource = structuredClone(pointer[currentInputIndex]);
+    const objTarget = pointerSavedCV[currentInputIndexes[componentKey]];
+    const objSource = structuredClone(
+      pointer[currentInputIndexes[componentKey]]
+    );
     // console.log(objTarget);
     // console.log(objSource);
 
@@ -279,13 +241,19 @@ function App() {
       Object.assign(objTarget, objSource);
     }
 
-    setCurrentInputIndex(0);
+    // setCurrentInputIndex(0);
+    setCurrentInputIndexes((prev) => {
+      return {
+        ...prev,
+        [componentKey]: 0, // Update index for this component
+      };
+    });
     setCurrentCV(updatedCV);
     setLastSavedCV(updatedSavedCV);
     toggleDisplayOff(elementSelector);
   }
 
-  function cancelButtonHandler(_pathToData, elementSelector) {
+  function cancelButtonHandler(componentKey, _pathToData, elementSelector) {
     /*
     toggle off the input fields 
      */
@@ -305,7 +273,7 @@ function App() {
       pointer = pointer[_pathToData[i]];
     }
 
-    pointer[currentInputIndex]["isSaved"] = true;
+    pointer[currentInputIndexes[componentKey]]["isSaved"] = true;
 
     const updatedSavedCV = { ...lastSavedCV };
     let pointerSavedCV = updatedSavedCV;
@@ -315,8 +283,10 @@ function App() {
       pointerSavedCV = pointerSavedCV[_pathToData[i]];
     }
 
-    const objTarget = pointer[currentInputIndex];
-    const objSource = structuredClone(pointerSavedCV[currentInputIndex]);
+    const objTarget = pointer[currentInputIndexes[componentKey]];
+    const objSource = structuredClone(
+      pointerSavedCV[currentInputIndexes[componentKey]]
+    );
     // console.log(objTarget);
     // console.log(objSource);
 
@@ -326,7 +296,13 @@ function App() {
       Object.assign(objTarget, objSource);
     }
 
-    setCurrentInputIndex(0);
+    // setCurrentInputIndex(0);
+    setCurrentInputIndexes((prev) => {
+      return {
+        ...prev,
+        [componentKey]: 0, // Update index for this component
+      };
+    });
     setCurrentCV(updatedCV);
     setLastSavedCV(updatedSavedCV);
     toggleDisplayOff(elementSelector);
@@ -335,27 +311,77 @@ function App() {
   return (
     <>
       <div className="main-container">
-        <h1>CV GENERATOR </h1>
+        <header className="main-header-container">
+          <div className="page-title">CV GENERATOR</div>
+        </header>
         {/* <div>unsaved status to be added</div> */}
 
         <div className="main-sidebar-container">
-          <PersonalInformation
+          <New_PersonalInformation
             currentCV={currentCV}
-            pathToData={[0, 0]}
+            currentInputIndex={currentInputIndexes["personalInformation"]}
+            pathToData={[0]}
             onChangeHandler={handleInput}
             toggleDisplay={toggleDisplay}
+            deleteEntryHandler={(...args) =>
+              deleteEntryHandler("personalInformation", ...args)
+            }
+            addButtonHandler={(...args) =>
+              addButtonHandler("personalInformation", ...args)
+            }
+            saveButtonHandler={(...args) =>
+              saveButtonHandler("personalInformation", ...args)
+            }
+            cancelButtonHandler={(...args) =>
+              cancelButtonHandler("personalInformation", ...args)
+            }
+            editButtonHandler={(...args) =>
+              editButtonHandler("personalInformation", ...args)
+            }
           />
           <Education
             currentCV={currentCV}
-            currentInputIndex={currentInputIndex}
+            currentInputIndex={currentInputIndexes["education"]}
             pathToData={[1]}
             onChangeHandler={handleInput}
             toggleDisplay={toggleDisplay}
-            deleteEntryHandler={deleteEntryHandler}
-            addButtonHandler={addButtonHandler}
-            saveButtonHandler={saveButtonHandler}
-            cancelButtonHandler={cancelButtonHandler}
-            editButtonHandler={editButtonHandler}
+            deleteEntryHandler={(...args) =>
+              deleteEntryHandler("education", ...args)
+            }
+            addButtonHandler={(...args) =>
+              addButtonHandler("education", ...args)
+            }
+            saveButtonHandler={(...args) =>
+              saveButtonHandler("education", ...args)
+            }
+            cancelButtonHandler={(...args) =>
+              cancelButtonHandler("education", ...args)
+            }
+            editButtonHandler={(...args) =>
+              editButtonHandler("education", ...args)
+            }
+          />
+          <Experience
+            currentCV={currentCV}
+            currentInputIndex={currentInputIndexes["experience"]}
+            pathToData={[2]}
+            onChangeHandler={handleInput}
+            toggleDisplay={toggleDisplay}
+            deleteEntryHandler={(...args) =>
+              deleteEntryHandler("experience", ...args)
+            }
+            addButtonHandler={(...args) =>
+              addButtonHandler("experience", ...args)
+            }
+            saveButtonHandler={(...args) =>
+              saveButtonHandler("experience", ...args)
+            }
+            cancelButtonHandler={(...args) =>
+              cancelButtonHandler("experience", ...args)
+            }
+            editButtonHandler={(...args) =>
+              editButtonHandler("experience", ...args)
+            }
           />
         </div>
 

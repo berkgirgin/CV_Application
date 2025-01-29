@@ -1,50 +1,391 @@
 :root {
+  --page-title-fontsize: 1.8rem;
+  --subpage-title-fontsize: 1.4rem;
+  --bigger-regular-item-fontsize: 1.2rem;
+  /* --big-item-fontsize: 1.2rem; */
+  --indentation-label: 0.3rem;
+  --label-width: 5rem;
+  --dark-blue: #1b3d5a;
+  --dark-blue-hover: hsl(208, 54%, 23%, 0.8);
+  --red-for-not-saved: red;
+  --dark-background-color: #252525;
+  --yellow-yugioh: #c3a154;
+  --padding-mobile: 1rem;
+  --padding-desktop: 3rem;
+  --default-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+
+  --custom-white: #fcfcfc;
+
+  background-color: var(--custom-white);
 }
+/* test with long texts, such as responsibilites! */
+
+/* reset Start*/
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: normal;
+}
+
+img {
+  overflow: hidden;
+  object-fit: cover;
+}
+
+/* reset End*/
 
 .main-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  border-bottom: 12px orange solid;
-  border-top: 12px orange solid;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  color: var(--dark-background-color);
+
+  display: grid;
 }
 
+/* Miscellaneous config */
+/* ******************** */
+.main-container {
+  text-align: center;
+}
+.title-container {
+  justify-content: center;
+}
+.buttons-container {
+  justify-content: center;
+}
+.cv-display {
+  text-align: center;
+}
+
+button {
+  height: 1.5rem;
+  width: 3.5rem;
+  font-size: 0.7rem;
+
+  background-color: var(--dark-blue);
+  color: var(--custom-white);
+  border: 2px black solid;
+  border-radius: 1rem;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+button.add_button,
+button.toggle_button {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  /* font-size: 3rem; */
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+button.add_button:hover,
+button.toggle_button:hover {
+  /* color: var(--dark-blue-hover); */
+  background-color: transparent;
+  scale: 1.1;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: var(--dark-blue-hover);
+}
+
+.greyed-out {
+  opacity: 0.4;
+}
+
+.saved-status {
+  color: var(--red-for-not-saved);
+  font-weight: bold;
+}
+
+span {
+  font-weight: bold;
+}
+/* ******************** */
+
+/* Header config */
+/* ************* */
+.page-title {
+  text-align: center;
+  font-size: var(--page-title-fontsize);
+  font-weight: bold;
+}
+/* ************* */
+
+/* Right sidebar config */
+/* ******************** */
+.main-sidebar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.title-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  padding-bottom: 0.2rem;
+  align-items: center;
+  font-size: var(--subpage-title-fontsize);
+  border-bottom: 2px solid black;
+}
+.subpage-title {
+  /* in case button needs a different fontsize */
+  font-weight: bold;
+}
+
+.inputs-container {
+  /* should work with toggle */
+  display: none;
+  /* display: flex; */
+  flex-direction: column;
+  gap: 0.5rem;
+
+  border: 2px black solid;
+  padding: 0.5rem;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.3rem; */
+  justify-content: center;
+  align-items: center;
+}
+label {
+  min-width: var(--label-width);
+  font-weight: bold;
+  margin-left: var(--indentation-label);
+  /* align-self: center; */
+}
+input {
+  width: 100%;
+  max-width: 25rem;
+  height: 2.5rem;
+  padding-left: 0.5rem;
+  padding-top: 0.1rem;
+  border-radius: 0.5rem;
+}
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.display-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.entry > .buttons-container {
+  margin-top: 0.2rem;
+}
+/* ******************** */
+
+/* config for sub-entries */
+/* ********************** */
+.sub-entry {
+}
+
+.education-schoolName {
+  font-weight: bold;
+  margin-bottom: 0.1rem;
+  margin-left: 0;
+}
+
+.education-titleOfStudy,
+.education-dates,
+.experience-responsibility,
+.experience-dates {
+  margin-left: var(--indentation-label);
+}
+
+.experience-positionTitle-and-companyName {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+/* ********************** */
+
+/* CV Display config */
+/* ***************** */
 .main-cv-display-container {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .cv-display {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  /* border: 8px solid var(--dark-blue-hover); */
+  padding-bottom: 1.5rem;
+  box-shadow: var(--default-box-shadow);
 }
 
 .cv-display > * {
   display: flex;
   flex-direction: column;
-  border: 4px solid black;
+  /* border: 4px solid black; */
 }
 
-.main-education-container > .inputs-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  border: 2px solid black;
+.cv-display-header {
+  text-align: center;
 }
 
-.main-education-container .display-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+.cv-display .education-info-container,
+.cv-display .experience-info-container {
+  padding: var(--padding-mobile);
 
-.education-info-container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.greyed-out {
-  opacity: 0.4;
+.personal-information-info-container {
+  background-color: var(--dark-blue);
+  color: var(--custom-white);
+  text-align: center;
+  padding: var(--padding-mobile);
+
+  padding-bottom: 1rem;
 }
+.cv-display .personal-information-entry > div:first-child {
+  margin: 0.5rem;
+  font-size: var(--page-title-fontsize);
+  font-weight: bold;
+}
+
+.cv-display .subpage-title {
+  font-size: var(--subpage-title-fontsize);
+  font-weight: bold;
+}
+.cv-display .personal-information-entry > div:first-child {
+  margin: 0.5rem;
+  font-size: var(--page-title-fontsize);
+  font-weight: bold;
+}
+
+.cv-display .education-entry div,
+.cv-display .experience-entry div {
+  margin-left: var(--indentation-label);
+}
+
+.cv-display .education-entry div:first-child,
+.cv-display .experience-entry div:first-child {
+  margin: 0.5rem;
+  font-size: var(--bigger-regular-item-fontsize);
+  font-weight: bold;
+  border-bottom: 1px solid var(--dark-blue);
+  margin-left: 0;
+}
+
+/* .main-education-container > .inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 2px solid black;
+  }
+
+  .main-education-container .display-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .education-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  } */
+/* ***************** */
+
+/* ******************/
+/* mobile styles End*/
+
+/* big tablet styles Start*/
+/* ************************/
+
+@media screen and (min-width: 760px) {
+  .main-header-container {
+    grid-row-start: 1;
+    grid-row-end: 2;
+  }
+  .main-sidebar-container {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 2;
+
+    margin-right: 4rem;
+  }
+  .main-cv-display-container {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+    margin-left: 4rem;
+  }
+
+  .main-container {
+    text-align: left;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .title-container {
+    justify-content: left;
+  }
+  .buttons-container {
+    justify-content: left;
+  }
+  input {
+    max-width: 35rem;
+  }
+
+  .personal-information-info-container,
+  .cv-display .education-info-container,
+  .cv-display .experience-info-container {
+    padding-right: var(--padding-desktop);
+    padding-left: var(--padding-desktop);
+  }
+  .personal-information-info-container {
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* ************************/

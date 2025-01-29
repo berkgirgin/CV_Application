@@ -17,7 +17,7 @@ function InputField({ label, currentCV, pathToData, onChangeHandler }) {
 
   return (
     <>
-      <label>
+      {/* <label>
         {label} :&nbsp;
         <input
           type="text"
@@ -26,7 +26,19 @@ function InputField({ label, currentCV, pathToData, onChangeHandler }) {
             onChangeHandler(e.target.value, pathToData);
           }}
         />
-      </label>
+      </label> */}
+
+      <div className="input-container">
+        <label htmlFor={label}>{label}&nbsp; </label>
+        <input
+          id={label}
+          type="text"
+          value={fieldName}
+          onChange={(e) => {
+            onChangeHandler(e.target.value, pathToData);
+          }}
+        />
+      </div>
     </>
   );
 }

@@ -3,13 +3,14 @@ import InputField from "./InputField.jsx";
 import { getNestedValue } from "./InputField.jsx";
 import addIcon from "../assets/icons/add_icon.png";
 import circleArrowIcon from "../assets/icons/circle_arrow_icon.png";
+
 /*
 when save/cancel buttons are active or seen, disable other options?
 
 as i can't NOT change the CV,
 I can simply grey out currently edited fields in display CV?
 */
-function Education({
+function Experience({
   currentCV,
   currentInputIndex,
   pathToData,
@@ -22,32 +23,46 @@ function Education({
   editButtonHandler,
 }) {
   // important for toggles
-  let elementSelector = ".main-education-container > .inputs-container";
+  let elementSelector = ".main-experience-container > .inputs-container";
   let displayContainerSelector =
-    ".main-education-container > .display-container";
+    ".main-experience-container > .display-container";
 
   const entriesToDisplay = currentCV[pathToData[0]].map((entry, _index) => {
     return (
-      <div key={entry.index} className="education-entry entry">
-        <div className="education-schoolName sub-entry">
-          <div>{entry.schoolName}</div>
+      <div key={entry.index} className="experience-entry entry">
+        <div className="experience-positionTitle-and-companyName sub-entry">
+          <div>
+            {entry.positionTitle} at {entry.companyName}
+          </div>
         </div>
 
-        <div className="education-titleOfStudy sub-entry">
-          <div>{entry.titleOfStudy}</div>
+        {/* <div className="experience-companyName sub-entry">
+          <div>Company Name: {entry.companyName}</div>
         </div>
-        <div className="education-dates sub-entry">
+
+        <div className="experience-positionTitle sub-entry">
+          <div>Position Title: {entry.positionTitle}</div>
+        </div> */}
+
+        <div className="experience-responsibility sub-entry">
+          <div>
+            <span>Responsibilities: </span>
+            {entry.responsibility}
+          </div>
+        </div>
+
+        <div className="experience-dates sub-entry">
           <div>
             {entry.startDate} - {entry.endDate}
           </div>
         </div>
 
-        {/* <div className="education-endDate sub-entry">
-          <div>End Date: {entry.endDate}</div>
+        {/* <div className="experience-startDate sub-entry">
+          <div>Start Date: {entry.startDate}</div>
         </div>
 
-        <div className="education-startDate sub-entry">
-          <div>Start Date: {entry.startDate}</div>
+        <div className="experience-endDate sub-entry">
+          <div>End Date: {entry.endDate}</div>
         </div> */}
 
         {/* adding a status if not saved */}
@@ -78,9 +93,9 @@ function Education({
   });
   return (
     <>
-      <div className="main-education-container sidebar-container">
+      <div className="main-experience-container sidebar-container">
         <div className="title-container">
-          <div className="subpage-title">Education</div>
+          <div className="subpage-title">Experience</div>
           <button
             className="add_button button"
             onClick={() => {
@@ -101,15 +116,21 @@ function Education({
 
         <div className="inputs-container">
           <InputField
-            label="School Name"
+            label="Company Name"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "schoolName"]}
+            pathToData={[...pathToData, currentInputIndex, "companyName"]}
             onChangeHandler={onChangeHandler}
           />
           <InputField
-            label="Title of Study"
+            label="Position Title"
             currentCV={currentCV}
-            pathToData={[...pathToData, currentInputIndex, "titleOfStudy"]}
+            pathToData={[...pathToData, currentInputIndex, "positionTitle"]}
+            onChangeHandler={onChangeHandler}
+          />
+          <InputField
+            label="Responsibility"
+            currentCV={currentCV}
+            pathToData={[...pathToData, currentInputIndex, "responsibility"]}
             onChangeHandler={onChangeHandler}
           />
           <InputField
@@ -149,4 +170,4 @@ function Education({
   );
 }
 
-export default Education;
+export default Experience;
