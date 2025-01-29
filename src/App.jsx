@@ -4,8 +4,8 @@ import PersonalInformation from "./components/PersonalInformation.jsx";
 import New_PersonalInformation from "./components/New_PersonalInformation.jsx";
 import Education from "./components/Education.jsx";
 import Experience from "./components/Experience.jsx";
-import CvDisplay from "./components/CVDisplay.jsx";
 import example_CV_Database from "./components/exampleCV.jsx";
+import CvDisplay from "./components/CvDisplay.jsx";
 
 // import { getNestedValue } from "./components/InputField.jsx";
 
